@@ -1,9 +1,7 @@
-let firstCard = getRandomCard()
-let secondCard = getRandomCard()
-let cards = [firstCard, secondCard];
-let sum = firstCard + secondCard;
+let cards = [];
+let sum = 0;
 let hasBlackJack = false;
-let isAlive = true;
+let isAlive = false;
 let message = "";
 let startBtn = document.getElementById('start-btn');
 let messageEl = document.getElementById("message-el");
@@ -21,17 +19,24 @@ startBtn.addEventListener('click', startGame, false);
 drawCard.addEventListener('click', newCard, false);
 
 function startGame() {
+    isAlive = true;
+    let firstCard = getRandomCard();
+    let secondCard = getRandomCard();
+    cards = [firstCard, secondCard];
+    sum = firstCard + secondCard;
+
     renderGame()
+
 }
 
 function renderGame() {
 
-    sumEl.textContent = "Sum: " + sum;
     cardEl.textContent = "Card: "
     for (let i = 0; i < cards.length; i++) {
         cardEl.textContent += cards[i] + " ";
-    }
 
+    }
+    sumEl.textContent = "Sum: " + sum;
     if (sum <= 20) {
         message = "Do you want to draw a new card? ";
     } else if (sum === 21) {
@@ -44,9 +49,17 @@ function renderGame() {
     messageEl.textContent = message;
 }
 
+
+
 function newCard() {
-    let card = getRandomCard()
-    sum += card;
-    cards.push(card)
-    startGame()
+    if (!hasBlackJack && isAlive) {
+        let card = getRandomCard()
+        sum += card;
+        cards.push(card)
+        renderGame()
+
+    } else {
+        console.log("GAME OVER")
+    }
+
 }
